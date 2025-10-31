@@ -1,0 +1,21 @@
+# This is a production-ready file. It does not build anything.
+# It pulls your pre-built images from Docker Hub.
+
+services:
+  backend:
+    image: lalitmrao04/devops-backend:latest
+    container_name: backend-prod
+    ports:
+      - "5000:5000"
+    restart: always # Ensures it restarts if it crashes
+    environment:
+      - NODE_ENV=production
+
+  frontend:
+    image: lalitmrao04/devops-frontend:latest
+    container_name: frontend-prod
+    ports:
+      - "80:80"     # <-- Maps to port 80 on your computer
+    restart: always # Ensures it restarts if it crashes
+    depends_on:
+      - backend
