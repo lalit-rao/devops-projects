@@ -1,0 +1,34 @@
+# "version" is obsolete and has been removed
+
+services:
+  jenkins:
+    build: ./jenkins           # <-- MODIFIED: Builds from the 'jenkins' folder
+    container_name: jenkins
+    ports:
+      - "8080:8080"   # Jenkins UI
+      - "50000:50000" # Jenkins agents
+    volumes:
+      - jenkins_home:/var/jenkins_home
+
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - jenkins
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
+
+volumes:
+  jenkins_home: # Persists Jenkins data

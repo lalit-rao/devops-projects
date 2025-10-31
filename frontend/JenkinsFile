@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo '📦 Checking out source code...'
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                echo '📥 Installing frontend dependencies...'
+                sh 'npm install'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo '🏗️ Building the React Vite app...'
+                sh 'npm run build'
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                echo '📦 Archiving build output...'
+                archiveArtifacts artifacts: 'dist/**', followSymlinks: false
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Frontend build successful!'
+        }
+        failure {
+            echo '❌ Frontend build failed!'
+        }
+    }
+}
