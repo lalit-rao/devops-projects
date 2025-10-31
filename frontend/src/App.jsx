@@ -25,7 +25,8 @@ function App() {
             <section className="project">
                 <h2>My DevOps Project</h2>
                 <p>
-                    A complete CI/CD pipeline integrating <strong>Node.js</strong>, <strong>Docker</strong>, and <strong>Jenkins</strong>.
+                    A complete CI/CD pipeline integrating <strong>Node.js</strong>, <strong>Docker</strong>,
+                    and <strong>Jenkins</strong>.
                     Built for continuous integration, containerization, and deployment automation.
                 </p>
 
@@ -35,6 +36,12 @@ function App() {
                     <div className="stack-item">Jenkins</div>
                     <div className="stack-item">GitHub</div>
                 </div>
+                {/*<div className="stack">*/}
+                {/*    <div className="stack-item">Node.js</div>*/}
+                {/*    <div className="stack-item">Docker</div>*/}
+                {/*    <div className="stack-item">Jenkins</div>*/}
+                {/*    <div className="stack-item">GitHub</div>*/}
+                {/*</div>*/}
             </section>
 
             {/* ===== Footer ===== */}
