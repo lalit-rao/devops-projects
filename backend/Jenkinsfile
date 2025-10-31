@@ -1,39 +1,49 @@
 pipeline {
+    // 'agent any' means the main pipeline controller can run on any available agent
     agent any
 
     stages {
         stage('Checkout') {
             steps {
                 echo '📦 Checking out source code...'
+                // This checks out the code from the Git repo you configured
                 checkout scm
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build & Install') {
+            // This agent directive runs *only this stage* inside a Docker container
+            agent {
+                docker { image 'node:18-alpine' }
+            }
             steps {
-                echo '📥 Installing Node.js dependencies...'
+                echo '🚚 Running build inside a Node container...'
+                sh 'node -v'
+                sh 'npm -v'
                 sh 'npm install'
             }
         }
 
         stage('Run Tests') {
+            // This stage ALSO runs inside the same type of container
+            agent {
+                docker { image 'node:18-alpine' }
+            }
             steps {
                 echo '🧪 Running tests...'
-                sh 'npm test || echo "No tests defined"'
-            }
-        }
-
-        stage('Run Server') {
-            steps {
-                echo '🚀 Starting backend server...'
-                sh 'node server.js & sleep 5 && kill $!'
+                // This will run the 'test' script from your package.json
+                sh 'npm test'
             }
         }
     }
 
+    // This block runs at the end, no matter what
     post {
+        always {
+            echo 'Pipeline finished.'
+        }
         success {
-            echo '✅ Backend build successful!'
+            echo '✅ Build was successful!'
         }
         failure {
             echo '❌ Build failed!'

@@ -1,14 +1,14 @@
-# "version" is obsolete and has been removed
-
 services:
   jenkins:
-    build: ./jenkins           # <-- MODIFIED: Builds from the 'jenkins' folder
+    build: ./jenkins
     container_name: jenkins
     ports:
       - "8080:8080"   # Jenkins UI
       - "50000:50000" # Jenkins agents
     volumes:
       - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # <-- ADDED
+    user: root                                  # <-- ADDED
 
   backend:
     build: ./backend
