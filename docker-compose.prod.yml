@@ -1,13 +1,11 @@
-# This is a production-ready file. It does not build anything.
-# It pulls your pre-built images from Docker Hub.
-
 services:
+  # --- PRODUCTION APPS ---
   backend:
     image: lalitmrao04/devops-backend:latest
     container_name: backend-prod
     ports:
       - "5000:5000"
-    restart: always # Ensures it restarts if it crashes
+    restart: always
     environment:
       - NODE_ENV=production
 
@@ -15,7 +13,40 @@ services:
     image: lalitmrao04/devops-frontend:latest
     container_name: frontend-prod
     ports:
-      - "80:80"     # <-- Maps to port 80 on your computer
-    restart: always # Ensures it restarts if it crashes
+      - "80:80"
+    restart: always
     depends_on:
       - backend
+
+  # --- DEV TOOLS ---
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    ports:
+      - "9000:9000" # SonarQube web UI
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+
+  jenkins:
+    build: ./jenkins # Jenkins is always built from its Dockerfile
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    user: root
+    restart: always
+    depends_on:
+      - sonarqube # Make sure SonarQube starts before Jenkins
+
+volumes:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  jenkins_home:

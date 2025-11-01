@@ -42,6 +42,12 @@ function App() {
                     <div className="stack-item">Jenkins</div>
                     <div className="stack-item">GitHub</div>
                 </div>
+                {/*<div className="stack">*/}
+                {/*    <div className="stack-item">Node.js</div>*/}
+                {/*    <div className="stack-item">Docker</div>*/}
+                {/*    <div className="stack-item">Jenkins</div>*/}
+                {/*    <div className="stack-item">GitHub</div>*/}
+                {/*</div>*/}
             </section>
 
             {/* ===== Footer ===== */}
