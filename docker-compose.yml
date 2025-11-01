@@ -1,14 +1,55 @@
+#services:
+#  jenkins:
+#    build: ./jenkins
+#    container_name: jenkins
+#    ports:
+#      - "8080:8080"   # Jenkins UI
+#      - "50000:50000" # Jenkins agents
+#    volumes:
+#      - jenkins_home:/var/jenkins_home
+#      - /var/run/docker.sock:/var/run/docker.sock  # <-- ADDED
+#    user: root                                  # <-- ADDED
+#
+#  backend:
+#    build: ./backend
+#    container_name: backend
+#    ports:
+#      - "5000:5000"
+#    environment:
+#      - NODE_ENV=development
+#    depends_on:
+#      - jenkins
+#
+#  frontend:
+#    build: ./frontend
+#    container_name: frontend
+#    ports:
+#      - "3000:80"
+#    environment:
+#      - NODE_ENV=development
+#    depends_on:
+#      - backend
+#
+#volumes:
+#  jenkins_home: # Persists Jenkins data
+
+
+
+
+
 services:
   jenkins:
     build: ./jenkins
     container_name: jenkins
     ports:
-      - "8080:8080"   # Jenkins UI
-      - "50000:50000" # Jenkins agents
+      - "8080:8080"
+      - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock  # <-- ADDED
-    user: root                                  # <-- ADDED
+      - /var/run/docker.sock:/var/run/docker.sock
+    user: root
+    depends_on:
+      - sonarqube  # <-- Added this
 
   backend:
     build: ./backend
@@ -30,5 +71,22 @@ services:
     depends_on:
       - backend
 
+  # --- NEW SONARQUBE SERVICE ---
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    ports:
+      - "9000:9000" # SonarQube web UI
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+
 volumes:
-  jenkins_home: # Persists Jenkins data
+  jenkins_home:
+  # --- NEW SONARQUBE VOLUMES ---
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
