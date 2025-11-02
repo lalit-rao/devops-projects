@@ -18,7 +18,7 @@ function App() {
                     <a href="http://localhost:5000" target="_blank" rel="noreferrer">
                         <button className="btn">Backend</button>
                     </a>
-                    <a href="https://see-uneliminated-tashina.ngrok-free.dev/" target="_blank" rel="noreferrer">
+                    <a href="http://localhost:8080" target="_blank" rel="noreferrer">
                         <button className="btn">Jenkins</button>
                     </a>
                     <a href="http://localhost:9000/projects" target="_blank" rel="noreferrer">
@@ -42,12 +42,6 @@ function App() {
                     <div className="stack-item">Jenkins</div>
                     <div className="stack-item">GitHub</div>
                 </div>
-                {/*<div className="stack">*/}
-                {/*    <div className="stack-item">Node.js</div>*/}
-                {/*    <div className="stack-item">Docker</div>*/}
-                {/*    <div className="stack-item">Jenkins</div>*/}
-                {/*    <div className="stack-item">GitHub</div>*/}
-                {/*</div>*/}
             </section>
 
             {/* ===== Footer ===== */}
